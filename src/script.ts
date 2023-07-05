@@ -1,3 +1,4 @@
+import { CountList } from "./CountBy.js";
 import Estatisticas from "./Estatisticas.js";
 import fetchData from "./fetchData.js";
 import normalizarTransacao from "./normalizarTransacao.js";
@@ -12,6 +13,15 @@ async function handleData() {
     preencherTransacoes(transacoes);
 }
 
+function preencherLista(lista: CountList, containerId: string): void{
+    const containerElement = document.getElementById(containerId)
+    if(containerElement){
+        Object.keys(lista).forEach((key)=>{
+            containerElement.innerHTML += `<p>${key}: ${lista[key]}</p>`
+        })
+    }
+
+}
 function preencherTransacoes(transacoes: Transacao[]): void {
     const data = new Estatisticas(transacoes)
     const totalElement = document.querySelector<HTMLElement>('#total span')
@@ -21,6 +31,8 @@ function preencherTransacoes(transacoes: Transacao[]): void {
             currency: "BRL"
         })
     }
+    preencherLista(data.pagamento, 'pagamento')
+    preencherLista(data.status, 'status')
 }
 function preencherTabela(transacoes: Transacao[]): void {
     const tabela = document.querySelector("#transacoes tbody");
